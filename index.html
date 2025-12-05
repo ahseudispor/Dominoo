@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dominó Químico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <header class="header">
+            <h1>Dominó Químico</h1>
+            <div class="scores">
+                <div>Você: <span id="playerScore">0</span> pts (<span id="playerPieces">7</span> peças)</div>
+                <div>CPU: <span id="cpuScore">0</span> pts (<span id="cpuPieces">7</span> peças)</div>
+            </div>
+            <div class="message" id="message">Seu turno! Clique em uma peça</div>
+        </header>
+
+        <!-- Modal de Instruções -->
+        <div id="instructionsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Como Jogar</h2>
+                    <button class="close-btn" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <section>
+                        <h3>Objetivo</h3>
+                        <p>Seja o primeiro a jogar todas as suas peças no tabuleiro e marque pontos fazendo ligações químicas que sigam a regra do octeto!</p>
+                    </section>
+
+                    <section>
+                        <h3>Componentes</h3>
+                        <ul>
+                            <li><strong>28 peças de dominó</strong> com elementos químicos</li>
+                            <li>Cada peça tem 2 elementos com seus elétrons de valência</li>
+                            <li>Cada jogador começa com 7 peças</li>
+                            <li>O resto fica no monte para comprar</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Como Jogar</h3>
+                        <ol>
+                            <li><strong>Conectar elementos:</strong> As peças só conectam quando os elementos nas pontas são iguais (ex: H com H, O com O)</li>
+                            <li><strong>Jogar sua peça:</strong> Clique na peça desejada e escolha em qual lado do tabuleiro colocar (← ou →)</li>
+                            <li><strong>Não pode jogar?</strong> Clique em "Comprar" para pegar uma peça do monte</li>
+                            <li><strong>Regra do octeto:</strong> Quando você conecta dois elementos que somam 8 elétrons de valência, ganha +10 pontos! (ex: Na + F = 1 + 7 = 8)</li>
+                        </ol>
+                    </section>
+
+                    <section>
+                        <h3>Vitória</h3>
+                        <p>O primeiro jogador a terminar suas peças vence! Quem tiver mais pontos ao final ganha o jogo.</p>
+                    </section>
+
+                    <section>
+                        <h3>Elementos no Jogo</h3>
+                        <p>H (1e⁻), Li (1e⁻), Be (2e⁻), C (4e⁻), N (5e⁻), O (6e⁻), F (7e⁻)</p>
+                    </section>
+                </div>
+                <button class="btn-primary full-width" id="closeModalBtn">Entendi, vamos jogar!</button>
+            </div>
+        </div>
+
+        <!-- Mão do CPU -->
+        <div class="cpu-hand">
+            <div class="hand-header">
+                <span>Computador (<span id="cpuHandCount">7</span> peças)</span>
+            </div>
+            <div class="hand-pieces" id="cpuHand"></div>
+        </div>
+
+        <!-- Tabuleiro -->
+        <div class="board">
+            <div class="board-header">Tabuleiro</div>
+            <div class="board-content" id="board">
+                <div class="empty-board">Clique em uma peça sua para começar</div>
+            </div>
+        </div>
+
+        <!-- Mão do Jogador -->
+        <div class="player-hand">
+            <div class="hand-header">
+                <span>Suas peças</span>
+                <div class="controls">
+                    <button class="btn btn-help" id="instructionsBtn">
+                        <span class="icon">?</span> Instruções
+                    </button>
+                    <button class="btn btn-buy" id="buyBtn">
+                        Comprar (<span id="buyPileCount">14</span>)
+                    </button>
+                    <button class="btn btn-reset" id="resetBtn">
+                        <span class="icon">↻</span> Novo Jogo
+                    </button>
+                </div>
+            </div>
+            <div class="hand-pieces" id="playerHand"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

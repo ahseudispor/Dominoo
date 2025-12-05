@@ -1,0 +1,483 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #2d7a3e 0%, #1e5a2e 100%);
+    min-height: 100vh;
+    padding: 20px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.scores {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.message {
+    color: #ffd700;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.modal-body {
+    color: #555;
+}
+
+.modal-body section {
+    margin-bottom: 20px;
+}
+
+.modal-body h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.modal-body ul, .modal-body ol {
+    margin-left: 20px;
+}
+
+.modal-body li {
+    margin-bottom: 8px;
+}
+
+/* Hands */
+.cpu-hand, .player-hand {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.hand-header {
+    color: white;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hand-pieces {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Board */
+.board {
+    background: #1e5a2e;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    min-height: 200px;
+}
+
+.board-header {
+    color: white;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.board-content {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.empty-board {
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    padding: 60px 20px;
+    width: 100%;
+}
+
+/* Dominó Piece */
+.domino-piece {
+    display: inline-flex;
+    border: 4px solid #000;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.domino-piece:hover {
+    transform: scale(1.05);
+}
+
+.domino-piece.selected {
+    box-shadow: 0 0 0 4px #3b82f6;
+    transform: scale(1.05);
+}
+
+.domino-piece.cpu-piece {
+    background: #4a5568;
+    border-color: #2d3748;
+    cursor: default;
+}
+
+.domino-piece.cpu-piece:hover {
+    transform: none;
+}
+
+.domino-half {
+    width: 64px;
+    height: 96px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+
+.domino-half:first-child {
+    border-right: 2px solid #000;
+}
+
+.element-symbol {
+    font-weight: bold;
+    font-size: 0.875rem;
+    margin-bottom: 4px;
+}
+
+.electrons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+    max-width: 48px;
+}
+
+.electron {
+    width: 6px;
+    height: 6px;
+    background: #000;
+    border-radius: 50%;
+}
+
+/* Side Buttons */
+.side-btn {
+    width: 48px;
+    height: 96px;
+    background: rgba(59, 130, 246, 0.5);
+    border: 2px solid rgba(147, 197, 253, 0.8);
+    border-radius: 8px;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.side-btn:hover {
+    background: rgba(59, 130, 246, 0.8);
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+}
+
+.btn-help {
+    background: #d97706;
+}
+
+.btn-help:hover {
+    background: #b45309;
+}
+
+.btn-buy {
+    background: #2563eb;
+}
+
+.btn-buy:hover {
+    background: #1d4ed8;
+}
+
+.btn-buy:disabled {
+    background: #6b7280;
+    cursor: not-allowed;
+}
+
+.btn-reset {
+    background: #4b5563;
+}
+
+.btn-reset:hover {
+    background: #374151;
+}
+
+.btn-primary {
+    background: #16a34a;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background: #15803d;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.icon {
+    font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .scores {
+        flex-direction: column;
+        gap: 5px;
+        font-size: 0.9rem;
+    }
+
+    .message {
+        font-size: 0.95rem;
+    }
+    
+    .hand-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .controls {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        flex: 1;
+        min-width: 100px;
+        justify-content: center;
+        font-size: 0.8rem;
+        padding: 10px 8px;
+    }
+    
+    .domino-piece {
+        border-width: 3px;
+    }
+
+    .domino-half {
+        width: 48px;
+        height: 72px;
+        padding: 4px;
+    }
+
+    .element-symbol {
+        font-size: 0.75rem;
+    }
+
+    .electron {
+        width: 5px;
+        height: 5px;
+    }
+
+    .side-btn {
+        width: 40px;
+        height: 72px;
+        font-size: 1.2rem;
+    }
+
+    .board {
+        padding: 15px 10px;
+        min-height: 150px;
+    }
+
+    .board-content {
+        gap: 3px;
+    }
+
+    .cpu-hand .domino-piece.cpu-piece {
+        width: 96px;
+        height: 72px;
+    }
+
+    .modal-content {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .modal-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .modal-body {
+        font-size: 0.9rem;
+    }
+
+    .modal-body h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.3rem;
+    }
+
+    .scores {
+        font-size: 0.85rem;
+    }
+
+    .message {
+        font-size: 0.85rem;
+    }
+
+    .domino-half {
+        width: 40px;
+        height: 60px;
+    }
+
+    .element-symbol {
+        font-size: 0.7rem;
+    }
+
+    .electron {
+        width: 4px;
+        height: 4px;
+        gap: 1px;
+    }
+
+    .side-btn {
+        width: 32px;
+        height: 60px;
+        font-size: 1rem;
+    }
+
+    .btn {
+        font-size: 0.75rem;
+        padding: 8px 6px;
+    }
+
+    .cpu-hand .domino-piece.cpu-piece {
+        width: 80px;
+        height: 60px;
+    }
+
+    .hand-pieces {
+        gap: 8px;
+    }
+
+    .board-content {
+        gap: 2px;
+    }
+
+    .modal-content {
+        padding: 15px;
+    }
+}
