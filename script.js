@@ -320,7 +320,6 @@ function updateUI() {
     gameState.cpuHand.forEach(() => {
         const placeholder = document.createElement('div');
         placeholder.className = 'domino-piece cpu-piece';
-        // Não forçar tamanho - deixar o CSS controlar (vertical por padrão)
         cpuHandDiv.appendChild(placeholder);
     });
     
@@ -328,7 +327,6 @@ function updateUI() {
     const playerHandDiv = document.getElementById('playerHand');
     playerHandDiv.innerHTML = '';
     gameState.playerHand.forEach(piece => {
-        // FALSE no último parâmetro = VERTICAL
         const pieceElement = createDominoPieceElement(piece, false, () => {
             if (gameState.currentPlayer === 'player') {
                 gameState.selectedPiece = piece;
@@ -344,7 +342,7 @@ function updateUI() {
         playerHandDiv.appendChild(pieceElement);
     });
     
-    // Atualizar tabuleiro
+    // Atualizar tabuleiro - Estilo Dominó Real
     const boardDiv = document.getElementById('board');
     boardDiv.innerHTML = '';
     
@@ -363,9 +361,9 @@ function updateUI() {
             boardDiv.appendChild(leftBtn);
         }
         
-        // Peças do tabuleiro - PEÇAS HORIZONTAIS
+        // Peças do tabuleiro - PEÇAS HORIZONTAIS dispostas como dominó real
         gameState.board.forEach(piece => {
-            const pieceElement = createDominoPieceElement(piece, false, null, true); // TRUE = HORIZONTAL
+            const pieceElement = createDominoPieceElement(piece, false, null, true);
             boardDiv.appendChild(pieceElement);
         });
         
