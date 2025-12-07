@@ -1,12 +1,12 @@
 // Elementos químicos disponíveis
 const elements = [
-    { symbol: 'H', electrons: 1 },
-    { symbol: 'Li', electrons: 1 },
-    { symbol: 'Be', electrons: 2 },
-    { symbol: 'C', electrons: 4 },
-    { symbol: 'N', electrons: 5 },
-    { symbol: 'O', electrons: 6 },
-    { symbol: 'F', electrons: 7 }
+    { symbol: 'H', electrons: 1, color: '#3b82f6' },   // Azul
+    { symbol: 'Li', electrons: 1, color: '#3b82f6' },  // Azul
+    { symbol: 'Be', electrons: 2, color: '#ef4444' },  // Vermelho
+    { symbol: 'C', electrons: 4, color: '#8b5cf6' },   // Roxo
+    { symbol: 'N', electrons: 5, color: '#ef4444' },   // Vermelho
+    { symbol: 'O', electrons: 6, color: '#3b82f6' },   // Azul
+    { symbol: 'F', electrons: 7, color: '#10b981' }    // Verde
 ];
 
 // Estado do jogo
@@ -35,7 +35,7 @@ function createPieces() {
         }
     }
     
-    return pieces; // 7+6+5+4+3+2+1 = 28 peças
+    return pieces;
 }
 
 // Embaralhar array
@@ -238,9 +238,18 @@ function checkWin(player) {
 }
 
 // Criar elemento de peça de dominó
-function createDominoPieceElement(piece, isCPU = false, onClick = null) {
+function createDominoPieceElement(piece, isCPU = false, onClick = null, horizontal = false) {
     const pieceDiv = document.createElement('div');
-    pieceDiv.className = `domino-piece ${isCPU ? 'cpu-piece' : ''}`;
+    pieceDiv.className = 'domino-piece';
+    
+    if (isCPU) {
+        pieceDiv.classList.add('cpu-piece');
+    }
+    
+    if (horizontal) {
+        pieceDiv.classList.add('horizontal');
+    }
+    
     if (gameState.selectedPiece?.id === piece.id) {
         pieceDiv.classList.add('selected');
     }
@@ -249,7 +258,7 @@ function createDominoPieceElement(piece, isCPU = false, onClick = null) {
         pieceDiv.onclick = onClick;
     }
     
-    // Lado esquerdo
+    // Lado esquerdo/superior
     const leftHalf = document.createElement('div');
     leftHalf.className = 'domino-half';
     
@@ -262,13 +271,14 @@ function createDominoPieceElement(piece, isCPU = false, onClick = null) {
     for (let i = 0; i < piece.left.electrons; i++) {
         const electron = document.createElement('div');
         electron.className = 'electron';
+        electron.style.backgroundColor = piece.left.color;
         leftElectrons.appendChild(electron);
     }
     
     leftHalf.appendChild(leftSymbol);
     leftHalf.appendChild(leftElectrons);
     
-    // Lado direito
+    // Lado direito/inferior
     const rightHalf = document.createElement('div');
     rightHalf.className = 'domino-half';
     
@@ -281,6 +291,7 @@ function createDominoPieceElement(piece, isCPU = false, onClick = null) {
     for (let i = 0; i < piece.right.electrons; i++) {
         const electron = document.createElement('div');
         electron.className = 'electron';
+        electron.style.backgroundColor = piece.right.color;
         rightElectrons.appendChild(electron);
     }
     
@@ -303,21 +314,21 @@ function updateUI() {
     document.getElementById('cpuHandCount').textContent = gameState.cpuHand.length;
     document.getElementById('buyPileCount').textContent = gameState.buyPile.length;
     
-    // Atualizar mão do CPU
+    // Atualizar mão do CPU - PEÇAS VERTICAIS
     const cpuHandDiv = document.getElementById('cpuHand');
     cpuHandDiv.innerHTML = '';
     gameState.cpuHand.forEach(() => {
         const placeholder = document.createElement('div');
         placeholder.className = 'domino-piece cpu-piece';
-        placeholder.style.width = '128px';
-        placeholder.style.height = '96px';
+        // Não forçar tamanho - deixar o CSS controlar (vertical por padrão)
         cpuHandDiv.appendChild(placeholder);
     });
     
-    // Atualizar mão do jogador
+    // Atualizar mão do jogador - PEÇAS VERTICAIS
     const playerHandDiv = document.getElementById('playerHand');
     playerHandDiv.innerHTML = '';
     gameState.playerHand.forEach(piece => {
+        // FALSE no último parâmetro = VERTICAL
         const pieceElement = createDominoPieceElement(piece, false, () => {
             if (gameState.currentPlayer === 'player') {
                 gameState.selectedPiece = piece;
@@ -329,7 +340,7 @@ function updateUI() {
                     updateUI();
                 }
             }
-        });
+        }, false);
         playerHandDiv.appendChild(pieceElement);
     });
     
@@ -352,9 +363,9 @@ function updateUI() {
             boardDiv.appendChild(leftBtn);
         }
         
-        // Peças do tabuleiro
+        // Peças do tabuleiro - PEÇAS HORIZONTAIS
         gameState.board.forEach(piece => {
-            const pieceElement = createDominoPieceElement(piece);
+            const pieceElement = createDominoPieceElement(piece, false, null, true); // TRUE = HORIZONTAL
             boardDiv.appendChild(pieceElement);
         });
         
